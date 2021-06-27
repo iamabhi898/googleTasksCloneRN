@@ -1,6 +1,8 @@
 import React from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 
+import Task from '../components/Task';
+
 const Home = props => {
   const {themeStyle, isDarkMode, onSetTheme} = props;
   return (
@@ -27,7 +29,9 @@ const Home = props => {
         </View>
       </View>
       {/* Todo List */}
-      <Text style={{color: themeStyle.textColor}}>Google Tasks Clone</Text>
+      <Task themeStyle={themeStyle} task="Workout" />
+      <Task themeStyle={themeStyle} task="Meditate" />
+      <Task themeStyle={themeStyle} task="Count calories" />
     </View>
   );
 };
@@ -35,7 +39,6 @@ const Home = props => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    // justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
     // backgroundColor: 'pink',
@@ -63,8 +66,6 @@ const styles = StyleSheet.create({
   themeIcon: {
     height: 30,
     width: 30,
-    borderWidth: 1,
-    // borderColor: 'black',
     borderRadius: 15,
   },
 });

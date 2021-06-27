@@ -21,7 +21,7 @@ const App = () => {
   const [isDarkMode, setIsDarkMode] = React.useState(false);
 
   const themeStyle = {
-    backgroundColor: isDarkMode ? 'black' : 'white',
+    backgroundColor: isDarkMode ? '#202124' : 'white',
     textColor: isDarkMode ? 'white' : 'black',
   };
 
