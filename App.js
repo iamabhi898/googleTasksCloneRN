@@ -12,33 +12,38 @@ import {
   SafeAreaView,
   StatusBar,
   StyleSheet,
-  Text,
-  useColorScheme,
-  View,
+  // useColorScheme,
 } from 'react-native';
 
-const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
+import Home from './screens/Home';
 
-  const backgroundStyle = {
+const App = () => {
+  const [isDarkMode, setIsDarkMode] = React.useState(false);
+
+  const themeStyle = {
     backgroundColor: isDarkMode ? 'black' : 'white',
+    textColor: isDarkMode ? 'white' : 'black',
+  };
+
+  const onSetTheme = isDark => {
+    setIsDarkMode(isDark);
   };
 
   return (
     <SafeAreaView
       style={{
         ...styles.screen,
-        backgroundColor: isDarkMode ? 'black' : 'white',
+        backgroundColor: themeStyle.backgroundColor,
       }}>
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={isDarkMode ? 'black' : 'white'}
+        backgroundColor={themeStyle.backgroundColor}
       />
-      <View>
-        <Text style={{color: isDarkMode ? 'white' : 'black'}}>
-          Google Tasks Clone
-        </Text>
-      </View>
+      <Home
+        themeStyle={themeStyle}
+        isDarkMode={isDarkMode}
+        onSetTheme={onSetTheme}
+      />
     </SafeAreaView>
   );
 };
