@@ -1,10 +1,35 @@
 import React from 'react';
-import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  TextInput,
+} from 'react-native';
 
 import Task from '../components/Task';
 
 const Home = props => {
   const {themeStyle, isDarkMode, onSetTheme} = props;
+
+  const [task, setTask] = React.useState(null);
+  const [taskItems, setTaskItems] = React.useState([]);
+
+  const handleAddTask = () => {
+    if (task !== null && task !== '') {
+      setTaskItems(taskItems => [task, ...taskItems]);
+      setTask(null);
+    }
+  };
+
+  const handleCompleteTask = taskIndex => {
+    let itemsCopy = [...taskItems];
+    itemsCopy.splice(taskIndex, 1);
+    setTaskItems(itemsCopy);
+  };
+
   return (
     <View style={styles.screen}>
       {/* Header */}
@@ -17,6 +42,7 @@ const Home = props => {
             My Tasks
           </Text>
         </View>
+
         {/* Theme Icon */}
         <View style={styles.themeIconContainer}>
           <TouchableOpacity onPress={() => onSetTheme(!isDarkMode)}>
@@ -29,9 +55,45 @@ const Home = props => {
         </View>
       </View>
       {/* Todo List */}
-      <Task themeStyle={themeStyle} task="Workout" />
-      <Task themeStyle={themeStyle} task="Meditate" />
-      <Task themeStyle={themeStyle} task="Count calories" />
+      {taskItems.map((item, index) => {
+        return (
+          <Task
+            key={index}
+            themeStyle={themeStyle}
+            task={item}
+            id={index}
+            onCompleteTask={handleCompleteTask}
+          />
+        );
+      })}
+      {/* Writing a Task */}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.taskInputWrapper}>
+        <TextInput
+          style={{
+            ...styles.input,
+            color: themeStyle.textColor,
+            backgroundColor: themeStyle.secBackgroundColor,
+          }}
+          placeholder={'New task'}
+          placeholderTextColor={'gray'}
+          value={task}
+          onChangeText={text => setTask(text)}
+        />
+        <TouchableOpacity onPress={handleAddTask} activeOpacity={0.8}>
+          <View
+            style={{
+              ...styles.addButton,
+              backgroundColor: themeStyle.secBackgroundColor,
+            }}>
+            <Text
+              style={{...styles.addButtonText, color: themeStyle.textColor}}>
+              +
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
     </View>
   );
 };
@@ -67,6 +129,48 @@ const styles = StyleSheet.create({
     height: 30,
     width: 30,
     borderRadius: 15,
+  },
+  taskInputWrapper: {
+    position: 'absolute',
+    bottom: 20,
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  input: {
+    paddingVertical: 15,
+    width: '75%',
+    fontSize: 16,
+    paddingHorizontal: 15,
+    borderRadius: 25,
+    // shadow
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+    elevation: 7,
+  },
+  addButton: {
+    height: 60,
+    width: 60,
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    // shadow
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+    elevation: 7,
+  },
+  addButtonText: {
+    fontSize: 40,
+    fontWeight: 'bold',
   },
 });
 

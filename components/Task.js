@@ -1,12 +1,21 @@
 import React from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 
 const Task = props => {
-  const {task, themeStyle} = props;
+  const {id, task, themeStyle, onCompleteTask} = props;
   return (
     <View style={styles.taskWrapper}>
-      <View style={styles.circle}></View>
-      <Text style={{...styles.task, color: themeStyle.textColor}}>{task}</Text>
+      <TouchableOpacity
+        onPress={() => {
+          onCompleteTask(id);
+        }}>
+        <View style={styles.circle}></View>
+      </TouchableOpacity>
+      <Text
+        style={{...styles.task, color: themeStyle.textColor}}
+        numberOfLines={2}>
+        {task}
+      </Text>
     </View>
   );
 };
@@ -15,8 +24,11 @@ const styles = StyleSheet.create({
   taskWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: 55,
-    width: '100%',
+    maxHeight: 120,
+    width: '90%',
+    paddingRight: 50,
+    // borderColor: 'white',
+    // borderWidth: 1,
   },
   circle: {
     height: 20,
@@ -25,10 +37,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: 'gray',
     marginRight: 16,
-    marginLeft: 24,
+    marginLeft: 10,
   },
   task: {
     fontSize: 16,
+    paddingVertical: 15,
   },
 });
 

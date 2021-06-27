@@ -23,6 +23,7 @@ const App = () => {
   const themeStyle = {
     backgroundColor: isDarkMode ? '#202124' : 'white',
     textColor: isDarkMode ? 'white' : 'black',
+    secBackgroundColor: isDarkMode ? '#35363A' : 'white',
   };
 
   const onSetTheme = isDark => {
