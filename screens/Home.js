@@ -94,6 +94,24 @@ const Home = props => {
           </View>
         </TouchableOpacity>
       </KeyboardAvoidingView>
+
+      {/* Empty Screen */}
+      {taskItems.length === 0 ? (
+        <View style={{...styles.emptyScreen}}>
+          <Text
+            style={{
+              color: themeStyle.textColor,
+              fontWeight: 'bold',
+              fontSize: 16,
+              marginBottom: 10,
+            }}>
+            A fresh start
+          </Text>
+          <Text style={{color: '#888'}}>Anything to add?</Text>
+        </View>
+      ) : (
+        <></>
+      )}
     </View>
   );
 };
@@ -171,6 +189,12 @@ const styles = StyleSheet.create({
   addButtonText: {
     fontSize: 40,
     fontWeight: 'bold',
+  },
+  emptyScreen: {
+    flex: 0.8,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
