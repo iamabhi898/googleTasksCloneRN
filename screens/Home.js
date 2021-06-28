@@ -7,15 +7,21 @@ import {
   KeyboardAvoidingView,
   Platform,
   TextInput,
+  ScrollView,
+  Dimensions,
 } from 'react-native';
 
 import Task from '../components/Task';
+import CompletedTask from '../components/CompletedTask';
+
+const windowHeight = Dimensions.get('window').height;
 
 const Home = props => {
   const {themeStyle, isDarkMode, onSetTheme} = props;
 
   const [task, setTask] = React.useState(null);
   const [taskItems, setTaskItems] = React.useState([]);
+  const [completedTasks, setCompletedTasks] = React.useState([]);
 
   const handleAddTask = () => {
     if (task !== null && task !== '') {
@@ -26,9 +32,24 @@ const Home = props => {
 
   const handleCompleteTask = taskIndex => {
     let itemsCopy = [...taskItems];
+    setCompletedTasks(completedTasks => [
+      taskItems[taskIndex],
+      ...completedTasks,
+    ]);
     itemsCopy.splice(taskIndex, 1);
     setTaskItems(itemsCopy);
   };
+
+  const handleNotCompleteTask = taskIndex => {
+    let itemsCopy = [...completedTasks];
+    setTaskItems(taskItems => [completedTasks[taskIndex], ...taskItems]);
+    itemsCopy.splice(taskIndex, 1);
+    setCompletedTasks(itemsCopy);
+  };
+
+  React.useEffect(() => {
+    console.log(taskItems, completedTasks);
+  }, [completedTasks]);
 
   return (
     <View style={styles.screen}>
@@ -55,17 +76,33 @@ const Home = props => {
         </View>
       </View>
       {/* Todo List */}
-      {taskItems.map((item, index) => {
-        return (
-          <Task
-            key={index}
-            themeStyle={themeStyle}
-            task={item}
-            id={index}
-            onCompleteTask={handleCompleteTask}
-          />
-        );
-      })}
+      <ScrollView style={{width: '100%'}}>
+        <View style={styles.tasksContainer}>
+          {taskItems.map((item, index) => {
+            return (
+              <Task
+                key={index}
+                themeStyle={themeStyle}
+                task={item}
+                id={index}
+                onCompleteTask={handleCompleteTask}
+              />
+            );
+          })}
+          {completedTasks.map((item, index) => {
+            return (
+              <CompletedTask
+                key={index}
+                themeStyle={themeStyle}
+                task={item}
+                id={index}
+                onNotCompleteTask={handleNotCompleteTask}
+              />
+            );
+          })}
+        </View>
+      </ScrollView>
+
       {/* Writing a Task */}
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -96,7 +133,7 @@ const Home = props => {
       </KeyboardAvoidingView>
 
       {/* Empty Screen */}
-      {taskItems.length === 0 ? (
+      {taskItems.length === 0 && completedTasks.length === 0 ? (
         <View style={{...styles.emptyScreen}}>
           <Text
             style={{
@@ -148,6 +185,10 @@ const styles = StyleSheet.create({
     width: 30,
     borderRadius: 15,
   },
+  tasksContainer: {
+    paddingHorizontal: 30,
+    paddingBottom: 100,
+  },
   taskInputWrapper: {
     position: 'absolute',
     bottom: 20,
@@ -191,10 +232,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   emptyScreen: {
-    flex: 0.8,
-    width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'absolute',
+    top: windowHeight * 0.45,
+    zIndex: -1,
   },
 });
 

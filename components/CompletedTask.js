@@ -1,13 +1,15 @@
 import React from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 
-const Task = props => {
-  const {id, task, themeStyle, onCompleteTask} = props;
+// import Icon from 'react-native-vector-icons/MaterialIcons';
+
+const CompletedTasks = props => {
+  const {id, task, themeStyle, onNotCompleteTask} = props;
   return (
     <View style={styles.taskWrapper}>
       <TouchableOpacity
         onPress={() => {
-          onCompleteTask(id);
+          onNotCompleteTask(id);
         }}>
         <View style={styles.circle}></View>
       </TouchableOpacity>
@@ -37,11 +39,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: 'gray',
     marginRight: 16,
+    backgroundColor: 'skyblue',
   },
   task: {
     fontSize: 16,
     paddingVertical: 15,
+    textDecorationLine: 'line-through',
   },
 });
 
-export default Task;
+export default CompletedTasks;
