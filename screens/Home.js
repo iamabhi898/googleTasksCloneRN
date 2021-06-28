@@ -10,11 +10,13 @@ import {
   ScrollView,
   Dimensions,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import Task from '../components/Task';
 import CompletedTask from '../components/CompletedTask';
+import CompletedSection from '../components/CompletedSection';
 
-const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('window').width;
 
 const Home = props => {
   const {themeStyle, isDarkMode, onSetTheme} = props;
@@ -23,11 +25,19 @@ const Home = props => {
   const [taskItems, setTaskItems] = React.useState([]);
   const [completedTasks, setCompletedTasks] = React.useState([]);
 
+  const [isCompletedSelected, setIsCompletedSelected] = React.useState(false);
+
   const handleAddTask = () => {
     if (task !== null && task !== '') {
       setTaskItems(taskItems => [task, ...taskItems]);
       setTask(null);
     }
+  };
+
+  const handleDeleteTask = taskIndex => {
+    let itemsCopy = [...completedTasks];
+    itemsCopy.splice(taskIndex, 1);
+    setCompletedTasks(itemsCopy);
   };
 
   const handleCompleteTask = taskIndex => {
@@ -47,9 +57,13 @@ const Home = props => {
     setCompletedTasks(itemsCopy);
   };
 
-  React.useEffect(() => {
-    console.log(taskItems, completedTasks);
-  }, [completedTasks]);
+  const handleOpenCompleted = () => {
+    setIsCompletedSelected(!isCompletedSelected);
+  };
+
+  // React.useEffect(() => {
+  //   console.log(taskItems, completedTasks);
+  // }, [completedTasks]);
 
   return (
     <View style={styles.screen}>
@@ -70,8 +84,13 @@ const Home = props => {
             <View
               style={{
                 ...styles.themeIcon,
-                backgroundColor: themeStyle.textColor,
-              }}></View>
+              }}>
+              <Icon
+                name={isDarkMode ? 'wb-sunny' : 'brightness-3'}
+                size={30}
+                color={themeStyle.textColor}
+              />
+            </View>
           </TouchableOpacity>
         </View>
       </View>
@@ -89,17 +108,31 @@ const Home = props => {
               />
             );
           })}
-          {completedTasks.map((item, index) => {
-            return (
-              <CompletedTask
-                key={index}
-                themeStyle={themeStyle}
-                task={item}
-                id={index}
-                onNotCompleteTask={handleNotCompleteTask}
-              />
-            );
-          })}
+          {completedTasks.length !== 0 ? (
+            <View style={styles.sectionLine}></View>
+          ) : null}
+          {completedTasks.length !== 0 ? (
+            <CompletedSection
+              numOfTasks={completedTasks.length}
+              themeStyle={themeStyle}
+              isCompletedSelected={isCompletedSelected}
+              onOpenCompleted={handleOpenCompleted}
+            />
+          ) : null}
+          {isCompletedSelected
+            ? completedTasks.map((item, index) => {
+                return (
+                  <CompletedTask
+                    key={index}
+                    themeStyle={themeStyle}
+                    task={item}
+                    id={index}
+                    onNotCompleteTask={handleNotCompleteTask}
+                    onDeleteTask={handleDeleteTask}
+                  />
+                );
+              })
+            : null}
         </View>
       </ScrollView>
 
@@ -183,7 +216,8 @@ const styles = StyleSheet.create({
   themeIcon: {
     height: 30,
     width: 30,
-    borderRadius: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   tasksContainer: {
     paddingHorizontal: 30,
@@ -235,8 +269,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    top: windowHeight * 0.45,
+    bottom: '45%',
     zIndex: -1,
+  },
+  sectionLine: {
+    width: windowWidth,
+    marginLeft: -30,
+    height: 1,
+    backgroundColor: 'lightgray',
   },
 });
 

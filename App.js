@@ -24,6 +24,7 @@ const App = () => {
     backgroundColor: isDarkMode ? '#202124' : 'white',
     textColor: isDarkMode ? 'white' : 'black',
     secBackgroundColor: isDarkMode ? '#35363A' : 'white',
+    blueTintColor: '#4285F4',
   };
 
   const onSetTheme = isDark => {
