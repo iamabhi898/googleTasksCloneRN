@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   taskWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    maxHeight: 120,
+    // maxHeight: 120,
     width: '90%',
     justifyContent: 'space-between',
     paddingRight: 10,
