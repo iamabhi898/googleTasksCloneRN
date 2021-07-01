@@ -14,11 +14,27 @@ import {
   StyleSheet,
   // useColorScheme,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Home from './screens/Home';
 
 const App = () => {
   const [isDarkMode, setIsDarkMode] = React.useState(false);
+
+  // loading stored theme preference
+  const getStoredDarkThemeData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('@isDarkMode');
+      if (value !== null) {
+        // value previously stored
+        const isTrueSet = value === 'true';
+        setIsDarkMode(isTrueSet);
+      }
+    } catch (e) {
+      // error reading value
+      console.log('loading stored theme doesnt work', e);
+    }
+  };
 
   const themeStyle = {
     backgroundColor: isDarkMode ? '#202124' : 'white',
@@ -27,9 +43,19 @@ const App = () => {
     blueTintColor: '#4285F4',
   };
 
-  const onSetTheme = isDark => {
-    setIsDarkMode(isDark);
+  // storing theme preference
+  const onSetTheme = async isDark => {
+    try {
+      setIsDarkMode(isDark);
+      const val = isDark.toString();
+      await AsyncStorage.setItem('@isDarkMode', val);
+    } catch (e) {
+      console.log('storing theme doesnt work', e);
+    }
   };
+  React.useEffect(() => {
+    getStoredDarkThemeData();
+  }, []);
 
   return (
     <SafeAreaView

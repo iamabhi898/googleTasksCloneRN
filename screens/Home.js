@@ -11,6 +11,7 @@ import {
   Dimensions,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Task from '../components/Task';
 import CompletedTask from '../components/CompletedTask';
@@ -61,9 +62,37 @@ const Home = props => {
     setIsCompletedSelected(!isCompletedSelected);
   };
 
-  // React.useEffect(() => {
-  //   console.log(taskItems, completedTasks);
-  // }, [completedTasks]);
+  // storing tasks data locally
+  React.useEffect(async () => {
+    try {
+      const jsonValue = JSON.stringify({
+        tasksList: await taskItems,
+        completedTasksList: await completedTasks,
+      });
+      await AsyncStorage.setItem('@storage_Key', jsonValue);
+    } catch (e) {
+      // saving error
+      console.log('storing tasks doesnt work', e);
+    }
+  }, [completedTasks, taskItems]);
+
+  // loading stored tasks data
+  React.useEffect(async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('@storage_Key');
+      const tasksObj =
+        jsonValue != null
+          ? JSON.parse(jsonValue)
+          : console.log('tasks is empty');
+      console.log(tasksObj);
+      setTaskItems(tasksObj.tasksList);
+      setCompletedTasks(tasksObj.completedTasksList);
+      console.log('loaded stored tasks successfully');
+    } catch (e) {
+      // error reading value
+      console.log('loading stored tasks data doesnt work');
+    }
+  }, []);
 
   return (
     <View style={styles.screen}>
