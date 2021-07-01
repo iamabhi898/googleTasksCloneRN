@@ -84,10 +84,10 @@ const Home = props => {
         jsonValue != null
           ? JSON.parse(jsonValue)
           : console.log('tasks is empty');
-      console.log(tasksObj);
+      // console.log(tasksObj);
       setTaskItems(tasksObj.tasksList);
       setCompletedTasks(tasksObj.completedTasksList);
-      console.log('loaded stored tasks successfully');
+      // console.log('loaded stored tasks successfully');
     } catch (e) {
       // error reading value
       console.log('loading stored tasks data doesnt work');
