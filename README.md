@@ -34,7 +34,7 @@ This is a To-Do app inspired by Google Tasks UI, this app allows you to create t
 `Read the documention of React Native for Installation and Environment Setup `
 [here](https://reactnative.dev/docs/environment-setup)
 
-Download the project the run following commands.
+Download the project then run following commands.
 
 ```
 npm install
