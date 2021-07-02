@@ -58,4 +58,4 @@ npx react-native run-ios
 
 - LinkedIn - [Abhishek Tripathi](https://www.linkedin.com/in/abhishek-tripathi-244a8b190/)
 
-[Back To The Top](#to-do-app)
+[Back To The Top](#to-do-app-)
