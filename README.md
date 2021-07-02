@@ -26,7 +26,7 @@ This is a To-Do app inspired by Google Tasks UI, this app allows you to create t
 - React Native CLI
 - react-native-vector-icons - Material Icons
 - @react-native-async-storage/async-storage - Async Storage
-
+- Git 
 ---
 
 ## How To Use
