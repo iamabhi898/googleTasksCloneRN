@@ -10,7 +10,7 @@
 
 ## Description
 
-This is a To-Do app inspired by Google Tasks UI, this app allows you to create a tasks, mark it as completed, delete the completed tasks and also undo the completed tasks. Dark theme can be enabled or disabled by theme icon.
+This is a To-Do app inspired by Google Tasks UI, this app allows you to create tasks, mark it as completed, delete the completed tasks and also undo the completed tasks. Dark theme can be enabled or disabled by theme icon.
 
 ### Features
 
